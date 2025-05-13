@@ -190,31 +190,4 @@ The value functions for this optimal policy are denoted $V^*(s)$ and $Q^*(s,a)$.
 Optimal state-value function: $V^*(s) = \max_{\pi} V_\pi(s)$
 Optimal action-value function: $Q^*(s,a) = \max_{\pi} Q_\pi(s,a)$
 
-The Bellman optimality equation for $V^*(s)$ is derived by considering that an optimal policy must select the action that maximizes the expected return:
-$V^*(s) = \max_{a \in A} Q^*(s,a)$
-
-Substituting the expression for $Q^*(s,a)$ (which is $R(s,a) + \gamma \sum_{s' \in S} P(s' \mid s,a) V^*(s')$ because if we take action $a$ and then act optimally, the value of the next state is $V^*(s')$):
-$$V^*(s) = \max_{a \in A} \left( R(s,a) + \gamma \sum_{s' \in S} P(s' \mid s,a) V^*(s') \right)$$
-
-This equation states that the value of a state under an optimal policy must equal the expected return for the best action from that state, followed by acting optimally thereafter.
-
-The Bellman optimality equation for $Q^*(s,a)$ is:
-$Q^*(s,a) = R(s,a) + \gamma \sum_{s' \in S} P(s' \mid s,a) V^*(s')$
-
-Since $V^*(s') = \max_{a' \in A} Q^*(s',a')$, we can write:
-$$Q^*(s,a) = R(s,a) + \gamma \sum_{s' \in S} P(s' \mid s,a) \max_{a' \in A} Q^*(s',a')$$
-
-This equation states that the value of taking action $a$ in state $s$ and then following an optimal policy is the expected immediate reward plus the discounted expected value of the optimal action-value from the next state $s'$, where the best action $a'$ is chosen in $s'$.
-These equations are non-linear (due to the $\max$ operator) and typically do not have a closed-form solution like the Bellman expectation equations. They are solved using iterative methods like Value Iteration or Policy Iteration, or approximated by various model-free RL algorithms (e.g., Q-learning, SARSA).
-
-Once $Q^*(s,a)$ is found, the optimal policy $\pi^*$ is deterministic and greedy with respect to $Q^*(s,a)$:
-$$\pi^*(s) = \underset{a \in A}{\operatorname{argmax}} Q^*(s,a)$$
-Alternatively, as a probability distribution:
-$$\pi^*(a \mid s) = \begin{cases} 1 & \text{if } a = \underset{a' \in A}{\operatorname{argmax}} Q^*(s,a') \\ 0 & \text{otherwise} \end{cases}$$
-
-### Role in Reinforcement Learning
-MDPs provide the standard mathematical framework for most RL problems. They allow us to formally define the interaction between an agent and its environment, the goal of maximizing cumulative reward, and to develop algorithms for learning optimal policies. They are essential for problems involving control and decision-making under uncertainty.
-
-
-### Role in Reinforcement Learning
-MDPs provide the standard mathematical framework for most RL problems. They allow us to formally define the interaction between an agent and its environment, the goal of maximizing cumulative reward, and to develop algorithms for learning optimal policies. They are essential for problems involving control and decision-making under uncertainty.
+Bellman Optimality EquationsThe goal of Reinforcement Learning (RL) is often to find an optimal policy π∗ that achieves the highest possible expected return. An optimal policy is one for which Vπ∗​(s)≥Vπ​(s) for all states s∈S and all policies π. The value functions for this optimal policy are denoted V∗(s) and Q∗(s,a).Optimal state-value function:V∗(s)=maxπ​Vπ​(s)Optimal action-value function:Q∗(s,a)=maxπ​Qπ​(s,a)The Bellman optimality equation for V∗(s) is derived by considering that an optimal policy must select the action that maximizes the expected return:V(s)=maxa∈A​Q(s,a)Substituting the expression for Q∗(s,a) (which is R(s,a)+γ∑s′∈S​P(s′∣s,a)V∗(s′) because if we take action a and then act optimally, the value of the next state is V∗(s′)):V^(s') \right)This equation states that the value of a state under an optimal policy must equal the expected return for the best action from that state, followed by acting optimally thereafter.The Bellman optimality equation for Q∗(s,a) is:Q(s,a)=R(s,a)+γ∑s′∈S​P(s′∣s,a)V(s′)Since V(s′)=maxa′∈A​Q(s′,a′), we can write:Q(s′,a′)This equation states that the value of taking action a in state s and then following an optimal policy is the expected immediate reward plus the discounted expected value of the optimal action-value from the next state s′, where the best action a′ is chosen in s′.These equations are non-linear (due to the max operator) and typically do not have a closed-form solution like the Bellman expectation equations. They are solved using iterative methods like Value Iteration or Policy Iteration, or approximated by various model-free RL algorithms (e.g., Q-learning, SARSA).Once Q∗(s,a) is found, the optimal policy π∗ is deterministic and greedy with respect to Q∗(s,a):\pi^(s,a)\pi^(s,a') \ 0 & \text{otherwise} \end{cases}Role in Reinforcement LearningMarkov Decision Processes (MDPs) provide the standard mathematical framework for most RL problems. They allow us to formally define the interaction between an agent and its environment, the goal of maximizing cumulative reward, and to develop algorithms for learning optimal policies. They are essential for problems involving control and decision-making under uncertainty.
