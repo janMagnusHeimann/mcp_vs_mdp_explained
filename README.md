@@ -167,11 +167,4 @@ $$Q_\pi(s,a) = R(s,a) + \gamma \sum_{s' \in S} P(s' \mid s,a) V_\pi(s')$$
 
 This means the value of taking action $a$ in state $s$ and then following policy $\pi$ is the expected immediate reward $R(s,a)$ plus the discounted expected value of the next state $s'$ (where $V_\pi(s')$ is the value of following $\pi$ from $s'$).
 
-### Bellman Optimality Equations
-The goal of RL is often to find an optimal policy $\pi^*$ that achieves the highest possible expected return. An optimal policy is one for which $V_{\pi^*}(s) \ge V_\pi(s)$ for all $s \in S$ and all policies $\pi$.
-The value functions for this optimal policy are denoted $V^*(s)$ and $Q^*(s,a)$.
-
-Optimal state-value function: $V^*(s) = \max_{\pi} V_\pi(s)$
-Optimal action-value function: $Q^*(s,a) = \max_{\pi} Q_\pi(s,a)$
-
 
