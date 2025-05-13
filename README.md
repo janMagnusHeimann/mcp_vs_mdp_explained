@@ -167,4 +167,427 @@ $$Q_\pi(s,a) = R(s,a) + \gamma \sum_{s' \in S} P(s' \mid s,a) V_\pi(s')$$
 
 This means the value of taking action $a$ in state $s$ and then following policy $\pi$ is the expected immediate reward $R(s,a)$ plus the discounted expected value of the next state $s'$ (where $V_\pi(s')$ is the value of following $\pi$ from $s'$).
 
+Optimal Value Functions (V 
+∗
+ (s) and Q 
+∗
+ (s,a))
+The ultimate goal in an MDP is to find an optimal policy π 
+∗
+  that achieves the highest possible expected return. An optimal policy is one that is better than or equal to all other policies. There is always at least one such policy.
 
+Associated with an optimal policy are the optimal state-value function V 
+∗
+ (s) and the optimal action-value function Q 
+∗
+ (s,a).
+
+Optimal State-Value Function (V 
+∗
+ (s)):
+V 
+∗
+ (s) is the maximum expected return achievable from state s.
+
+V 
+∗
+ (s)= 
+π
+max
+​
+ V 
+π
+​
+ (s)
+Optimal Action-Value Function (Q 
+∗
+ (s,a)):
+Q 
+∗
+ (s,a) is the maximum expected return achievable by taking action a in state s and thereafter following an optimal policy.
+
+Q 
+∗
+ (s,a)= 
+π
+max
+​
+ Q 
+π
+​
+ (s,a)
+The relationship between V 
+∗
+  and Q 
+∗
+  is fundamental:
+If we know Q 
+∗
+ (s,a), we can determine V 
+∗
+ (s) because an optimal policy will choose the action that maximizes Q 
+∗
+ (s,a):
+
+V 
+(
+ s,a)
+And if we know V 
+∗
+ (s), we can express Q 
+∗
+ (s,a) as the expected reward for taking action a in state s plus the discounted optimal value of the next state:
+
+Q 
+(
+ s 
+′
+ )
+
+(assuming R(s,a) is the expected reward for taking action a in state s)
+
+Or, using R(s,a,s 
+′
+ ):
+
+
+Q 
+(
+ s 
+′
+ ))
+Bellman Optimality Equations
+The Bellman optimality equations are a system of non-linear equations that define the optimal value functions. They state that the value of a state under an optimal policy must equal the expected return for the best action from that state.
+
+Bellman Optimality Equation for V 
+∗
+ (s):
+This equation expresses V 
+∗
+ (s) in terms of the optimal values of successor states V 
+∗
+ (s 
+′
+ ). It essentially says that the optimal value of a state is obtained by choosing the action that maximizes the sum of the immediate reward and the discounted optimal value of the next state.
+
+V^(s') \right)
+Alternatively, using Q 
+∗
+ (s,a):
+
+
+V 
+(
+ s,a)
+Bellman Optimality Equation for Q 
+∗
+ (s,a):
+This equation expresses Q 
+∗
+ (s,a) in terms of the optimal values of future state-action pairs Q 
+∗
+ (s 
+′
+ ,a 
+′
+ ). After taking action a in state s and moving to state s 
+′
+ , the agent will then choose the action a 
+′
+  that maximizes Q 
+∗
+ (s 
+′
+ ,a 
+′
+ ) in state s 
+′
+ .
+
+Q 
+(
+ s 
+′
+ ,a 
+′
+ )
+If we use V 
+∗
+ (s 
+′
+ ):
+
+
+Q 
+(
+ s 
+′
+ )
+
+where V 
+(
+ s 
+′
+ )=max 
+a 
+′
+ ∈A(s 
+′
+ )
+​
+ Q 
+(
+ s 
+′
+ ,a 
+′
+ ).
+
+Unlike the Bellman expectation equations (which are linear), the Bellman optimality equations involve the max operator, making them non-linear. There is no closed-form solution in general (like the matrix inversion for MRPs or for V 
+π
+​
+ ). Instead, iterative solution methods are used.
+
+Optimal Policy (π 
+∗
+ (s))
+Once we have found the optimal value functions (V 
+∗
+  or Q 
+∗
+ ), we can easily determine an optimal policy π 
+∗
+ .
+If we have Q 
+∗
+ (s,a), an optimal policy is to choose the action a that maximizes Q 
+∗
+ (s,a) in state s:
+
+π 
+(
+ s,a)
+This is a deterministic policy. If there are multiple actions that maximize Q 
+∗
+ (s,a), any of them can be chosen.
+
+If we only have V 
+∗
+ (s), we can find an optimal policy by one-step lookahead:
+
+\pi^(s') \right)
+This is equivalent to saying:
+
+
+π 
+(
+ s,a)
+The existence of an optimal policy is guaranteed in finite MDPs. Any policy that is greedy with respect to the optimal value functions V 
+∗
+  or Q 
+∗
+  is an optimal policy.
+
+Solving MDPs
+Finding the optimal policy often involves finding the optimal value functions. Common algorithms include:
+
+Value Iteration: Iteratively applies the Bellman optimality equation for V 
+∗
+ (s) (or Q 
+∗
+ (s,a)) to update value estimates until they converge.
+
+
+V 
+k+1
+​
+ (s)= 
+a∈A(s)
+max
+​
+ (R(s,a)+γ 
+s 
+′
+ ∈S
+∑
+​
+ P(s 
+′
+ ∣s,a)V 
+k
+​
+ (s 
+′
+ ))
+Policy Iteration: Alternates between two steps:
+
+Policy Evaluation: Given a policy π, compute V 
+π
+​
+ (s) (solve the Bellman expectation equation, e.g., by iterating V 
+k+1
+π
+​
+ (s)=∑ 
+a
+​
+ π(a∣s)(R(s,a)+γ∑ 
+s 
+′
+ 
+​
+ P(s 
+′
+ ∣s,a)V 
+k
+π
+​
+ (s 
+′
+ ))).
+
+Policy Improvement: Improve the policy by acting greedily with respect to V 
+π
+​
+ (s):
+
+
+\pi'(s) = \text{argmax}{s' \in S} P(s' \mid s,a) V_\pi(s') \right)
+
+This process is guaranteed to converge to an optimal policy π 
+∗
+ .
+
+Q-learning: A model-free RL algorithm that directly estimates Q 
+∗
+ (s,a) without needing the transition probabilities P or reward function R explicitly.
+
+3. Key Differences: MRPs vs. MDPs
+Feature
+
+Markov Reward Process (MRP)
+
+Markov Decision Process (MDP)
+
+Definition
+
+⟨S,P,R,γ⟩
+
+⟨S,A,P,R,γ⟩
+
+Agent's Role
+
+Passive observer; no actions or control.
+
+Active agent; chooses actions to influence transitions and rewards.
+
+Components
+
+States, Transition Probabilities, Reward Function, Discount Factor.
+
+States, Actions, Transition Probabilities, Reward Function, Discount Factor.
+
+Transition Prob.
+
+P(S 
+t+1
+​
+ =s 
+′
+ ∣S 
+t
+​
+ =s)
+
+P(S 
+t+1
+​
+ =s 
+′
+ ∣S 
+t
+​
+ =s,A 
+t
+​
+ =a)
+
+Reward Function
+
+R 
+s
+​
+ =E[R 
+t+1
+​
+ ∣S 
+t
+​
+ =s]
+
+R(s,a) or R(s,a,s 
+′
+ )
+
+Goal
+
+Evaluate states (calculate V(s)).
+
+Find optimal policy π 
+∗
+ (a∣s) to maximize rewards.
+
+Value Functions
+
+State-Value Function V(s).
+
+State-Value Function V 
+π
+​
+ (s), Action-Value Function Q 
+π
+​
+ (s,a). Optimal versions: V 
+∗
+ (s), Q 
+∗
+ (s,a).
+
+Bellman Equations
+
+Bellman Equation for V(s) (linear).
+
+Bellman Expectation Equations for V 
+π
+​
+ (s),Q 
+π
+​
+ (s,a) (linear). Bellman Optimality Equations for V 
+(
+ s),Q 
+(
+ s,a) (non-linear).
+
+Policy
+
+No concept of a policy (or a fixed, implicit one).
+
+Agent learns a policy π(a∣s).
+
+Primary Use in RL
+
+Evaluating a fixed policy (policy evaluation).
+
+Modeling and solving decision-making problems (control).
+
+4. Conclusion and Role in Reinforcement Learning
+MRPs and MDPs are fundamental building blocks for understanding and developing RL algorithms.
+
+MRPs provide the tools to analyze the value of states when the system's dynamics (or the agent's behavior) are fixed. This is crucial for the policy evaluation step in many RL algorithms, where we want to determine how good a particular policy is.
+
+MDPs extend this framework by incorporating actions, allowing an agent to learn how to behave optimally. They form the mathematical basis for most RL problems, providing a formal specification of the interaction between an agent and its environment. The goal in an MDP is typically to solve the control problem: finding an optimal policy.
+
+Algorithms like Value Iteration and Policy Iteration directly solve MDPs when a model of the environment (transition probabilities and rewards) is known. Model-free RL algorithms, such as Q-learning and SARSA, aim to learn optimal policies in MDPs even when the model is unknown, by learning value functions or policies directly from experience.
+
+Understanding the distinction and relationship between MRPs and MDPs, along with their respective value functions and Bellman equations, is essential for anyone delving into the theory and practice of Reinforcement Learning.
